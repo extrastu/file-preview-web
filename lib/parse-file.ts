@@ -74,8 +74,12 @@ export async function parseFile(file: File): Promise<ParseResult> {
     }
 
     case "excel": {
-      const data = await file.arrayBuffer()
-      const wb = XLSX.read(data, { type: "array" })
+      // CSV/TSV are text formats: decode as UTF-8 text first so non-ASCII
+      // characters (e.g. Chinese) aren't mangled by codepage auto-detection.
+      const isText = ext === "csv" || ext === "tsv"
+      const wb = isText
+        ? XLSX.read(await file.text(), { type: "string" })
+        : XLSX.read(await file.arrayBuffer(), { type: "array" })
       const sheets = wb.SheetNames.map((name) => {
         const ws = wb.Sheets[name]
         const rows = XLSX.utils.sheet_to_json<string[]>(ws, {

@@ -26,6 +26,7 @@ import {
 import { cn } from "@/lib/utils"
 import { FilePreview } from "@/components/file-preview"
 import { InfoDialog } from "@/components/info-dialog"
+import { InstallPrompt } from "@/components/install-prompt"
 
 type Item = {
   id: string
@@ -290,6 +291,8 @@ export function FilePreviewerApp() {
           </div>
         </div>
       )}
+
+      <InstallPrompt />
     </div>
   )
 }

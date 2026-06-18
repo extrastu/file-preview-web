@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Info, Shield } from "lucide-react"
+import { Download, Info, Shield } from "lucide-react"
 import {
   Dialog,
   DialogContent,
@@ -103,9 +103,13 @@ export function InfoDialog() {
                 ))}
               </ul>
             </div>
-            <p className="text-xs text-muted-foreground">
-              可安装为 PWA 应用，添加到主屏幕后支持离线打开。
-            </p>
+            <div className="flex items-start gap-2 rounded-lg border border-primary/20 bg-primary/5 p-3">
+              <Download className="mt-0.5 size-4 shrink-0 text-primary" />
+              <p className="text-xs leading-relaxed text-foreground">
+                <span className="font-medium">添加到桌面使用：</span>
+                可安装为 App，添加到主屏幕或桌面后支持离线打开、全屏运行，体验如同原生应用。桌面浏览器点击地址栏的安装图标，iPhone/iPad 通过分享菜单选择{'"添加到主屏幕"'}。
+              </p>
+            </div>
           </div>
         ) : (
           <div className="space-y-4 text-sm">

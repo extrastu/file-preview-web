@@ -2,6 +2,7 @@ import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
+import { ServiceWorkerRegister } from '@/components/service-worker-register'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
 const geistMono = Geist_Mono({
@@ -24,6 +25,12 @@ export const metadata: Metadata = {
   description,
   generator: 'v0.app',
   applicationName: '在线文件预览器',
+  manifest: '/manifest.webmanifest',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: '文件预览器',
+  },
   keywords: [
     '在线文件预览',
     '文件预览器',
@@ -73,8 +80,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   colorScheme: 'light dark',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
+    { media: '(prefers-color-scheme: light)', color: '#fcfcfd' },
+    { media: '(prefers-color-scheme: dark)', color: '#191a21' },
   ],
 }
 
@@ -90,6 +97,7 @@ export default function RootLayout({
     >
       <body className="font-sans antialiased">
         {children}
+        <ServiceWorkerRegister />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

@@ -12,6 +12,7 @@ import {
   Music,
   Network,
   Presentation,
+  ShieldCheck,
   Upload,
   X,
 } from "lucide-react"
@@ -24,6 +25,7 @@ import {
 } from "@/lib/preview-types"
 import { cn } from "@/lib/utils"
 import { FilePreview } from "@/components/file-preview"
+import { InfoDialog } from "@/components/info-dialog"
 
 type Item = {
   id: string
@@ -164,13 +166,16 @@ export function FilePreviewerApp() {
             </p>
           </div>
         </div>
-        <button
-          onClick={() => inputRef.current?.click()}
-          className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-        >
-          <Upload className="size-4" />
-          选择文件
-        </button>
+        <div className="flex items-center gap-1.5">
+          <InfoDialog />
+          <button
+            onClick={() => inputRef.current?.click()}
+            className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+          >
+            <Upload className="size-4" />
+            选择文件
+          </button>
+        </div>
         <input
           ref={inputRef}
           type="file"
@@ -336,6 +341,11 @@ function Dropzone({ onPick }: { onPick: () => void }) {
           </span>
         ))}
       </div>
+
+      <p className="mt-6 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
+        <ShieldCheck className="size-3.5 text-primary" />
+        所有文件均在本地浏览器解析，绝不上传到服务器
+      </p>
     </div>
   )
 }

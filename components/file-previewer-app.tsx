@@ -17,6 +17,7 @@ import {
   X,
 } from "lucide-react"
 import { parseFile } from "@/lib/parse-file"
+import { EXAMPLES, type Example } from "@/lib/example-files"
 import {
   getCategory,
   SUPPORTED_EXTENSIONS,
@@ -247,7 +248,10 @@ export function FilePreviewerApp() {
         <main className="flex flex-1 flex-col">
           {!active && (
             <div className="flex flex-1 items-center justify-center p-6">
-              <Dropzone onPick={() => inputRef.current?.click()} />
+              <Dropzone
+                onPick={() => inputRef.current?.click()}
+                onExample={(ex) => handleFiles([ex.build()])}
+              />
             </div>
           )}
 
@@ -297,7 +301,13 @@ export function FilePreviewerApp() {
   )
 }
 
-function Dropzone({ onPick }: { onPick: () => void }) {
+function Dropzone({
+  onPick,
+  onExample,
+}: {
+  onPick: () => void
+  onExample: (ex: Example) => void
+}) {
   return (
     <div className="w-full max-w-lg text-center">
       <button
@@ -343,6 +353,33 @@ function Dropzone({ onPick }: { onPick: () => void }) {
             .{ext}
           </span>
         ))}
+      </div>
+
+      <div className="mt-8">
+        <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          没有文件？试试这些示例
+        </p>
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          {EXAMPLES.map((ex) => {
+            const Meta = CATEGORY_META[ex.category]
+            const Icon = Meta.icon
+            return (
+              <button
+                key={ex.id}
+                onClick={() => onExample(ex)}
+                className="flex flex-col items-center gap-2 rounded-lg border border-border bg-card px-3 py-4 transition-colors hover:border-primary/60 hover:bg-muted/40"
+              >
+                <Icon className={cn("size-5", Meta.color)} />
+                <span className="text-sm font-medium text-foreground">
+                  {ex.label}
+                </span>
+                <span className="font-mono text-[11px] text-muted-foreground">
+                  {ex.fileName}
+                </span>
+              </button>
+            )
+          })}
+        </div>
       </div>
 
       <p className="mt-6 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">

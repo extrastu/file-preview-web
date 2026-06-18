@@ -2,10 +2,14 @@
 
 import { useCallback, useRef, useState } from "react"
 import {
+  FileCode,
+  FileImage,
   FileSpreadsheet,
   FileText,
   FileType2,
+  FileVideo,
   Loader2,
+  Music,
   Network,
   Presentation,
   Upload,
@@ -36,12 +40,16 @@ const CATEGORY_META: Record<
   { icon: typeof FileText; label: string; color: string }
 > = {
   text: { icon: FileText, label: "文本", color: "text-muted-foreground" },
+  code: { icon: FileCode, label: "代码", color: "text-sky-600" },
   markdown: { icon: FileType2, label: "Markdown", color: "text-primary" },
   pdf: { icon: FileText, label: "PDF", color: "text-destructive" },
   word: { icon: FileText, label: "Word", color: "text-primary" },
   excel: { icon: FileSpreadsheet, label: "表格", color: "text-emerald-600" },
   ppt: { icon: Presentation, label: "幻灯片", color: "text-orange-600" },
   mindmap: { icon: Network, label: "思维导图", color: "text-primary" },
+  image: { icon: FileImage, label: "图片", color: "text-pink-600" },
+  audio: { icon: Music, label: "音频", color: "text-amber-600" },
+  video: { icon: FileVideo, label: "视频", color: "text-indigo-600" },
   unknown: { icon: FileText, label: "未知", color: "text-muted-foreground" },
 }
 
@@ -110,6 +118,14 @@ export function FilePreviewerApp() {
 
   const removeItem = useCallback(
     (id: string) => {
+      const target = items.find((it) => it.id === id)
+      const res = target?.result
+      if (
+        res &&
+        (res.kind === "image" || res.kind === "audio" || res.kind === "video")
+      ) {
+        URL.revokeObjectURL(res.url)
+      }
       setItems((prev) => prev.filter((it) => it.id !== id))
       setActiveId((cur) => {
         if (cur !== id) return cur
@@ -288,7 +304,7 @@ function Dropzone({ onPick }: { onPick: () => void }) {
             拖入文件到此处，或点击选择
           </p>
           <p className="mt-1 text-sm text-muted-foreground">
-            支持 xmind、mm、md、txt、pdf、word、ppt、excel 等格式
+            支持思维导图、文档、表格、代码、图片、音视频等多种格式
           </p>
         </div>
       </button>
@@ -297,13 +313,20 @@ function Dropzone({ onPick }: { onPick: () => void }) {
         {[
           "xmind",
           "mm",
+          "opml",
           "md",
-          "txt",
           "pdf",
           "docx",
           "pptx",
           "xlsx",
           "csv",
+          "json",
+          "ts",
+          "py",
+          "png",
+          "svg",
+          "mp3",
+          "mp4",
         ].map((ext) => (
           <span
             key={ext}

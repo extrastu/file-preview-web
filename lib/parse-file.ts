@@ -1,7 +1,24 @@
 import * as XLSX from "xlsx"
-import { getCategory, getExtension, type ParseResult } from "./preview-types"
-import { parseFreeMind, parseXmind } from "./parse-mindmap"
+import {
+  getCategory,
+  getCodeLanguage,
+  getExtension,
+  type ParseResult,
+} from "./preview-types"
+import { parseFreeMind, parseOpml, parseXmind } from "./parse-mindmap"
 import { parsePptx } from "./parse-pptx"
+
+// Strip RTF control words to recover readable plain text.
+function stripRtf(rtf: string): string {
+  if (!rtf.startsWith("{\\rtf")) return rtf
+  return rtf
+    .replace(/\\par[d]?/g, "\n")
+    .replace(/\\'[0-9a-f]{2}/g, "")
+    .replace(/\\[a-z]+-?\d* ?/g, "")
+    .replace(/[{}]/g, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim()
+}
 
 export async function parseFile(file: File): Promise<ParseResult> {
   const ext = getExtension(file.name)
@@ -10,12 +27,32 @@ export async function parseFile(file: File): Promise<ParseResult> {
   switch (category) {
     case "text": {
       const content = await file.text()
-      return { kind: "text", content }
+      return { kind: "text", content: ext === "rtf" ? stripRtf(content) : content }
+    }
+
+    case "code": {
+      const content = await file.text()
+      return { kind: "code", content, language: getCodeLanguage(file.name) }
     }
 
     case "markdown": {
       const content = await file.text()
       return { kind: "markdown", content }
+    }
+
+    case "image": {
+      const url = URL.createObjectURL(file)
+      return { kind: "image", url, alt: file.name }
+    }
+
+    case "audio": {
+      const url = URL.createObjectURL(file)
+      return { kind: "audio", url, mime: file.type || `audio/${ext}` }
+    }
+
+    case "video": {
+      const url = URL.createObjectURL(file)
+      return { kind: "video", url, mime: file.type || `video/${ext}` }
     }
 
     case "pdf": {
@@ -66,6 +103,11 @@ export async function parseFile(file: File): Promise<ParseResult> {
       if (ext === "xmind") {
         const data = await file.arrayBuffer()
         const maps = await parseXmind(data)
+        return { kind: "mindmap", maps }
+      }
+      if (ext === "opml") {
+        const text = await file.text()
+        const maps = parseOpml(text)
         return { kind: "mindmap", maps }
       }
       // .mm FreeMind

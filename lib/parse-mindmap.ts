@@ -130,3 +130,48 @@ export async function parseFreeMind(text: string): Promise<MindMap[]> {
   const root = fromMmNode(rootNode)
   return [{ title: root.title, root }]
 }
+
+// ---------- OPML outline ----------
+
+function fromOutline(el: Element): MindNode {
+  const title =
+    el.getAttribute("text") ?? el.getAttribute("title") ?? "(untitled)"
+  const note = el.getAttribute("_note") ?? el.getAttribute("note") ?? undefined
+  const children = Array.from(el.children).filter(
+    (c) => c.tagName.toLowerCase() === "outline",
+  )
+  return {
+    title: title.trim() || "(untitled)",
+    note: note?.trim() || undefined,
+    children: children.map(fromOutline),
+  }
+}
+
+export function parseOpml(text: string): MindMap[] {
+  const doc = new DOMParser().parseFromString(text, "text/xml")
+  const body = doc.getElementsByTagName("body")[0]
+  const headTitle = doc
+    .getElementsByTagName("title")[0]
+    ?.textContent?.trim()
+  const topOutlines = body
+    ? Array.from(body.children).filter(
+        (c) => c.tagName.toLowerCase() === "outline",
+      )
+    : []
+
+  if (topOutlines.length === 0) {
+    throw new Error("无法识别的 OPML 文件结构")
+  }
+
+  // Single root outline -> use it directly; multiple -> wrap under a title node.
+  if (topOutlines.length === 1) {
+    const root = fromOutline(topOutlines[0])
+    return [{ title: headTitle || root.title, root }]
+  }
+
+  const root: MindNode = {
+    title: headTitle || "OPML",
+    children: topOutlines.map(fromOutline),
+  }
+  return [{ title: root.title, root }]
+}

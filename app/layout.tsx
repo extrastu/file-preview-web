@@ -9,28 +9,65 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://file-preview.vercel.app'
+
+const title = '在线文件预览器 - xmind/md/pdf/word/ppt/excel 等多格式预览'
+const description =
+  '免费的在线文件预览工具，在浏览器本地解析并预览 xmind、mm、opml、md、txt、pdf、word、ppt、excel、代码、图片、音视频等 60+ 种格式。支持拖拽上传，文件不会上传到服务器，安全私密。'
+
 export const metadata: Metadata = {
-  title: '在线文件预览器 - xmind/md/pdf/word/ppt/excel',
-  description:
-    '在浏览器本地解析并预览 xmind、mm、md、txt、pdf、word、ppt、excel 等格式文件，支持拖拽上传，文件不会上传到服务器。',
-  generator: 'v0.app',
-  icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: title,
+    template: '%s | 在线文件预览器',
   },
+  description,
+  generator: 'v0.app',
+  applicationName: '在线文件预览器',
+  keywords: [
+    '在线文件预览',
+    '文件预览器',
+    'xmind 预览',
+    '思维导图预览',
+    'pdf 在线预览',
+    'word 在线预览',
+    'excel 在线预览',
+    'ppt 在线预览',
+    'markdown 预览',
+    '代码预览',
+    '在线查看文件',
+    'file preview',
+    'document viewer',
+  ],
+  authors: [{ name: '在线文件预览器' }],
+  creator: '在线文件预览器',
+  alternates: {
+    canonical: '/',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'zh_CN',
+    url: siteUrl,
+    siteName: '在线文件预览器',
+    title,
+    description,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description,
+  },
+  category: 'productivity',
 }
 
 export const viewport: Viewport = {

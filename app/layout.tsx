@@ -10,8 +10,9 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: '在线文件预览器 - xmind/md/pdf/word/ppt/excel',
+  description:
+    '在浏览器本地解析并预览 xmind、mm、md、txt、pdf、word、ppt、excel 等格式文件，支持拖拽上传，文件不会上传到服务器。',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -46,7 +47,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html
+      lang="zh-CN"
+      className={`${geistSans.variable} ${geistMono.variable} bg-background`}
+    >
       <body className="font-sans antialiased">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}

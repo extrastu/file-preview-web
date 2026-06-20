@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useRef, useState } from "react"
+import Link from "next/link"
 import {
   FileCode,
   FileImage,
@@ -8,6 +9,7 @@ import {
   FileText,
   FileType2,
   FileVideo,
+  Info,
   Loader2,
   Music,
   Network,
@@ -26,7 +28,6 @@ import {
 } from "@/lib/preview-types"
 import { cn } from "@/lib/utils"
 import { FilePreview } from "@/components/file-preview"
-import { InfoDialog } from "@/components/info-dialog"
 import { InstallPrompt } from "@/components/install-prompt"
 
 type Item = {
@@ -169,7 +170,13 @@ export function FilePreviewerApp() {
           </div>
         </div>
         <div className="flex items-center gap-1.5">
-          <InfoDialog />
+          <Link
+            href="/about"
+            className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          >
+            <Info className="size-4" />
+            <span className="hidden sm:inline">关于</span>
+          </Link>
           <button
             onClick={() => inputRef.current?.click()}
             className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Download, Info, Shield } from "lucide-react"
+import { Apple, Download, ExternalLink, Info, Shield } from "lucide-react"
 import {
   Dialog,
   DialogContent,
@@ -110,6 +110,23 @@ export function InfoDialog() {
                 可安装为 App，添加到主屏幕或桌面后支持离线打开、全屏运行，体验如同原生应用。桌面浏览器点击地址栏的安装图标，iPhone/iPad 通过分享菜单选择{'"添加到主屏幕"'}。
               </p>
             </div>
+            <a
+              href="https://apps.apple.com/cn/app/peekmd-markdown-html-%E6%9E%81%E9%80%9F%E9%A2%84%E8%A7%88%E5%99%A8/id6775353195"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 rounded-lg border border-border bg-card p-3 transition-colors hover:border-primary/60 hover:bg-muted/40"
+            >
+              <Apple className="size-5 shrink-0 text-foreground" />
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-medium text-foreground">
+                  下载 iOS App：PeekMD
+                </span>
+                <span className="block text-xs text-muted-foreground">
+                  Markdown / HTML 极速预览器，App Store 免费下载
+                </span>
+              </span>
+              <ExternalLink className="size-4 shrink-0 text-muted-foreground" />
+            </a>
           </div>
         ) : (
           <div className="space-y-4 text-sm">

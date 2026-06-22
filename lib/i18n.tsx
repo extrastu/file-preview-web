@@ -16,7 +16,7 @@ const STORAGE_KEY = "app-lang"
 type Dict = {
   categories: Record<string, string>
   app: { title: string; subtitle: string }
-  nav: { about: string; choose: string }
+  nav: { about: string; choose: string; github: string }
   status: { parsing: string; failed: string }
   preview: { parsing: string; parseFailed: string; unsupported: (ext: string) => string }
   errors: Record<string, string>
@@ -53,6 +53,9 @@ type Dict = {
     privacyHeading: string
     privacyLead: string
     privacyPoints: { title: string; desc: string }[]
+    openSourceHeading: string
+    openSourceDesc: string
+    openSourceCta: string
   }
 }
 
@@ -75,7 +78,7 @@ const en: Dict = {
     title: "File Previewer",
     subtitle: "Parsed locally, never uploaded",
   },
-  nav: { about: "About", choose: "Choose File" },
+  nav: { about: "About", choose: "Choose File", github: "GitHub" },
   status: { parsing: "Parsing...", failed: "Failed" },
   preview: {
     parsing: "Parsing file...",
@@ -165,6 +168,10 @@ const en: Dict = {
         desc: "No login required. We do not collect file contents or any personally identifiable information.",
       },
     ],
+    openSourceHeading: "Open source",
+    openSourceDesc:
+      "This project is fully open source. Browse the code, file issues, or contribute on GitHub.",
+    openSourceCta: "View on GitHub",
   },
 }
 
@@ -187,7 +194,7 @@ const zh: Dict = {
     title: "文件预览器",
     subtitle: "本地解析，文件不会上传",
   },
-  nav: { about: "关于", choose: "选择文件" },
+  nav: { about: "关于", choose: "选择文件", github: "开源" },
   status: { parsing: "解析中...", failed: "解析失败" },
   preview: {
     parsing: "正在解析文件...",
@@ -275,6 +282,10 @@ const zh: Dict = {
         desc: "无需登录即可使用，我们不收集文件内容或任何可识别个人身份的信息。",
       },
     ],
+    openSourceHeading: "开源",
+    openSourceDesc:
+      "本项目完全开源，欢迎在 GitHub 上浏览代码、提交问题或参与贡献。",
+    openSourceCta: "在 GitHub 查看",
   },
 }
 

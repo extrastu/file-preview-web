@@ -1,33 +1,69 @@
-# file-preview-web
+# File Preview Web
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
+A fast, privacy-first online file previewer that runs **entirely in your browser**. Drag a file into the window and instantly preview mind maps, documents, spreadsheets, slides, code, images, audio, and video — no upload, no sign-up, no server.
 
-## Built with v0
+> All parsing happens locally on your device. Your files never leave the browser.
 
-This repository is linked to a [v0](https://v0.app) project. You can continue developing by visiting the link below -- start new chats to make changes, and v0 will push commits directly to this repo. Every merge to `main` will automatically deploy.
+🔗 **Repository:** [github.com/extrastu/file-preview-web](https://github.com/extrastu/file-preview-web)
 
-[Continue working on v0 →](https://v0.app/chat/projects/prj_WYr4qE6wRfBENLmsB668FDGZQQrH)
+## Features
+
+- **Drag & drop preview** — drop one or more files and parse them in parallel
+- **60+ formats** across many categories
+- **100% client-side** — files are never uploaded; parsing runs fully offline
+- **PWA** — installable to your home screen / desktop with offline support
+- **Internationalized** — English (default) and Chinese, switchable at runtime
+- **Built-in examples** — try the app instantly with sample documents
+
+## Supported formats
+
+| Category    | Formats                                    |
+| ----------- | ------------------------------------------ |
+| Mind maps   | `xmind` · `mm` · `opml`                    |
+| Documents   | `pdf` · `doc`/`docx` · `md` · `txt` · `rtf`|
+| Slides      | `ppt` · `pptx`                             |
+| Spreadsheets| `xls`/`xlsx` · `csv` · `tsv` · `ods`       |
+| Code        | `js`/`ts` · `py` · `json` · `yaml` · `sql` …|
+| Media       | `png` · `svg` · `webp` · `mp3` · `mp4` …   |
+
+> Legacy binary `.doc` and `.ppt` are not parsable in-browser — convert to `.docx` / `.pptx` first.
+
+## Tech stack
+
+- **Next.js (App Router)** + **React** + **TypeScript**
+- **Tailwind CSS** + **shadcn/ui** for styling and components
+- **pdfjs-dist** (PDF), **mammoth** (Word), **xlsx** (spreadsheets), **jszip** (pptx/xmind)
+- Custom parsers for FreeMind / XMind / OPML mind maps
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies and run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Other scripts
 
-## Learn More
+```bash
+pnpm build   # production build
+pnpm start   # run the production server
+pnpm lint    # lint the project
+```
 
-To learn more, take a look at the following resources:
+## How it works
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [v0 Documentation](https://v0.app/docs) - learn about v0 and how to use it.
+Files are read with the browser `File` API and dispatched to a format-specific parser in `lib/parse-file.ts`. Each parser returns a normalized result that the matching viewer renders. Because everything runs client-side, there is no backend and no network transfer of file contents.
+
+## Contributing
+
+Issues and pull requests are welcome on [GitHub](https://github.com/extrastu/file-preview-web). To add a new format, extend `EXT_MAP` in `lib/preview-types.ts`, add a parser branch in `lib/parse-file.ts`, and create a viewer component.
+
+## Built with v0
+
+This repository is linked to a [v0](https://v0.app) project and auto-deploys to Vercel on every merge to `main`.
+
+[Continue working on v0 →](https://v0.app/chat/projects/prj_WYr4qE6wRfBENLmsB668FDGZQQrH)

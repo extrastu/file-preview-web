@@ -177,13 +177,6 @@ export function FilePreviewerApp() {
             <Info className="size-4" />
             <span className="hidden sm:inline">{t.nav.about}</span>
           </Link>
-          <button
-            onClick={() => inputRef.current?.click()}
-            className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            <Upload className="size-4" />
-            <span className="hidden sm:inline">{t.nav.choose}</span>
-          </button>
         </div>
         <input
           ref={inputRef}

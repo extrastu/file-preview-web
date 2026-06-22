@@ -4,6 +4,7 @@ import Link from "next/link"
 import { Apple, ArrowLeft, Download, ExternalLink, Shield } from "lucide-react"
 import { useLang } from "@/lib/i18n"
 import { LanguageSwitcher } from "@/components/language-switcher"
+import { GithubIcon } from "@/components/github-icon"
 
 export function AboutContent() {
   const { t } = useLang()
@@ -101,6 +102,25 @@ export function AboutContent() {
               </li>
             ))}
           </ul>
+        </section>
+
+        <section className="mt-10">
+          <h2 className="text-lg font-semibold text-foreground">
+            {a.openSourceHeading}
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+            {a.openSourceDesc}
+          </p>
+          <a
+            href="https://github.com/extrastu/file-preview-web"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-primary/60 hover:bg-muted/40"
+          >
+            <GithubIcon className="size-4" />
+            {a.openSourceCta}
+            <ExternalLink className="size-3.5 text-muted-foreground" />
+          </a>
         </section>
       </article>
     </main>

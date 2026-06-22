@@ -6,6 +6,13 @@ A fast, privacy-first online file previewer that runs **entirely in your browser
 
 🔗 **Repository:** [github.com/extrastu/file-preview-web](https://github.com/extrastu/file-preview-web)
 
+## Preview
+
+<img width="1280" height="800" alt="image" src="https://github.com/user-attachments/assets/1eaf6cf4-f84b-4d23-a163-fae50f092948" />
+<img width="1280" height="800" alt="image" src="https://github.com/user-attachments/assets/9b7cd504-3de9-4f66-999e-267d25eaab61" />
+
+
+
 ## Features
 
 - **Drag & drop preview** — drop one or more files and parse them in parallel

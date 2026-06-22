@@ -32,7 +32,7 @@ export async function parsePptx(data: ArrayBuffer): Promise<SlideData[]> {
     .sort(naturalSort)
 
   if (slidePaths.length === 0) {
-    throw new Error("未找到幻灯片内容（仅支持 .pptx 格式）")
+    throw new Error("ERR_PPTX")
   }
 
   const slides: SlideData[] = []

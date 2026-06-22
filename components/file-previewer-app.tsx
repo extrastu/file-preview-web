@@ -99,15 +99,11 @@ export function FilePreviewerApp() {
             ),
           )
         } catch (e) {
+          const code = e instanceof Error ? e.message : ""
+          const error = t.errors[code] ?? t.preview.parseFailed
           setItems((prev) =>
             prev.map((it) =>
-              it.id === id
-                ? {
-                    ...it,
-                    status: "error",
-                    error: e instanceof Error ? e.message : t.preview.parseFailed,
-                  }
-                : it,
+              it.id === id ? { ...it, status: "error", error } : it,
             ),
           )
         }

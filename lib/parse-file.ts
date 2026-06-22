@@ -62,9 +62,7 @@ export async function parseFile(file: File): Promise<ParseResult> {
 
     case "word": {
       if (ext === "doc") {
-        throw new Error(
-          "暂不支持旧版 .doc 格式，请转换为 .docx 后重试。",
-        )
+        throw new Error("ERR_DOC")
       }
       const mammothMod = await import("mammoth")
       const mammoth = mammothMod.default ?? mammothMod
@@ -94,9 +92,7 @@ export async function parseFile(file: File): Promise<ParseResult> {
 
     case "ppt": {
       if (ext === "ppt") {
-        throw new Error(
-          "暂不支持旧版 .ppt 格式，请转换为 .pptx 后重试。",
-        )
+        throw new Error("ERR_PPT")
       }
       const data = await file.arrayBuffer()
       const slides = await parsePptx(data)

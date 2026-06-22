@@ -82,6 +82,14 @@ const en: Dict = {
     parseFailed: "Failed to parse file",
     unsupported: (ext) => `Preview is not supported for .${ext} files`,
   },
+  errors: {
+    ERR_XMIND: "Unrecognized XMind file structure",
+    ERR_FREEMIND: "Unrecognized FreeMind file structure",
+    ERR_OPML: "Unrecognized OPML file structure",
+    ERR_PPTX: "No slide content found (.pptx only)",
+    ERR_DOC: "Legacy .doc is not supported; please convert to .docx and try again.",
+    ERR_PPT: "Legacy .ppt is not supported; please convert to .pptx and try again.",
+  },
   drop: { overlay: "Drop to preview" },
   dropzone: {
     title: "Drag files here, or click to select",
@@ -185,6 +193,14 @@ const zh: Dict = {
     parsing: "正在解析文件...",
     parseFailed: "解析失败",
     unsupported: (ext) => `暂不支持预览 .${ext} 格式的文件`,
+  },
+  errors: {
+    ERR_XMIND: "无法识别的 XMind 文件结构",
+    ERR_FREEMIND: "无法识别的 FreeMind 文件结构",
+    ERR_OPML: "无法识别的 OPML 文件结构",
+    ERR_PPTX: "未找到幻灯片内容（仅支持 .pptx 格式）",
+    ERR_DOC: "暂不支持旧版 .doc 格式，请转换为 .docx 后重试。",
+    ERR_PPT: "暂不支持旧版 .ppt 格式，请转换为 .pptx 后重试。",
   },
   drop: { overlay: "松开鼠标即可解析文件" },
   dropzone: {

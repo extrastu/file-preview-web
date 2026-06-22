@@ -95,7 +95,7 @@ export async function parseXmind(data: ArrayBuffer): Promise<MindMap[]> {
     })
   }
 
-  throw new Error("无法识别的 XMind 文件结构")
+  throw new Error("ERR_XMIND")
 }
 
 // ---------- FreeMind / .mm ----------
@@ -125,7 +125,7 @@ export async function parseFreeMind(text: string): Promise<MindMap[]> {
     ? Array.from(map.children).find((c) => c.tagName === "node")
     : doc.getElementsByTagName("node")[0]
 
-  if (!rootNode) throw new Error("无法识别的 FreeMind 文件结构")
+  if (!rootNode) throw new Error("ERR_FREEMIND")
 
   const root = fromMmNode(rootNode)
   return [{ title: root.title, root }]
@@ -160,7 +160,7 @@ export function parseOpml(text: string): MindMap[] {
     : []
 
   if (topOutlines.length === 0) {
-    throw new Error("无法识别的 OPML 文件结构")
+    throw new Error("ERR_OPML")
   }
 
   // Single root outline -> use it directly; multiple -> wrap under a title node.

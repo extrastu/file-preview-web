@@ -31,7 +31,6 @@ import { useLang, type Lang } from "@/lib/i18n"
 import { FilePreview } from "@/components/file-preview"
 import { InstallPrompt } from "@/components/install-prompt"
 import { LanguageSwitcher } from "@/components/language-switcher"
-import { GithubIcon } from "@/components/github-icon"
 
 type Item = {
   id: string
@@ -178,17 +177,6 @@ export function FilePreviewerApp() {
             <Info className="size-4" />
             <span className="hidden sm:inline">{t.nav.about}</span>
           </Link>
-          <a
-            href="https://github.com/extrastu/file-preview-web"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={t.nav.github}
-            title={t.nav.github}
-            className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-          >
-            <GithubIcon className="size-4" />
-            <span className="hidden sm:inline">{t.nav.github}</span>
-          </a>
         </div>
         <input
           ref={inputRef}

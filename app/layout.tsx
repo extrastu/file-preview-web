@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { ServiceWorkerRegister } from '@/components/service-worker-register'
+import { LanguageProvider } from '@/lib/i18n'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
 const geistMono = Geist_Mono({
@@ -12,42 +13,42 @@ const geistMono = Geist_Mono({
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://file-preview.vercel.app'
 
-const title = '在线文件预览器 - xmind/md/pdf/word/ppt/excel 等多格式预览'
+const title = 'Online File Previewer - xmind/md/pdf/word/ppt/excel and more'
 const description =
-  '免费的在线文件预览工具，在浏览器本地解析并预览 xmind、mm、opml、md、txt、pdf、word、ppt、excel、代码、图片、音视频等 60+ 种格式。支持拖拽上传，文件不会上传到服务器，安全私密。'
+  'Free online file previewer that parses and previews xmind, mm, opml, md, txt, pdf, word, ppt, excel, code, images, audio and video — 60+ formats — locally in your browser. Drag and drop to preview; files are never uploaded to a server.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: title,
-    template: '%s | 在线文件预览器',
+    template: '%s | Online File Previewer',
   },
   description,
   generator: 'v0.app',
-  applicationName: '在线文件预览器',
+  applicationName: 'Online File Previewer',
   manifest: '/manifest.webmanifest',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: '文件预览器',
+    title: 'File Previewer',
   },
   keywords: [
+    'online file preview',
+    'file previewer',
+    'xmind preview',
+    'mind map preview',
+    'pdf preview online',
+    'word preview online',
+    'excel preview online',
+    'ppt preview online',
+    'markdown preview',
+    'code preview',
+    'view files online',
     '在线文件预览',
     '文件预览器',
-    'xmind 预览',
-    '思维导图预览',
-    'pdf 在线预览',
-    'word 在线预览',
-    'excel 在线预览',
-    'ppt 在线预览',
-    'markdown 预览',
-    '代码预览',
-    '在线查看文件',
-    'file preview',
-    'document viewer',
   ],
-  authors: [{ name: '在线文件预览器' }],
-  creator: '在线文件预览器',
+  authors: [{ name: 'Online File Previewer' }],
+  creator: 'Online File Previewer',
   alternates: {
     canonical: '/',
   },
@@ -63,9 +64,10 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: 'website',
-    locale: 'zh_CN',
+    locale: 'en_US',
+    alternateLocale: ['zh_CN'],
     url: siteUrl,
-    siteName: '在线文件预览器',
+    siteName: 'Online File Previewer',
     title,
     description,
   },
@@ -92,12 +94,14 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="zh-CN"
+      lang="en"
       className={`${geistSans.variable} ${geistMono.variable} bg-background`}
     >
       <body className="font-sans antialiased">
-        {children}
-        <ServiceWorkerRegister />
+        <LanguageProvider>
+          {children}
+          <ServiceWorkerRegister />
+        </LanguageProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

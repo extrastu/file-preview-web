@@ -2,13 +2,15 @@
 
 import { useState } from "react"
 import type { SheetData } from "@/lib/preview-types"
+import { useLang } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
 export function SheetViewer({ sheets }: { sheets: SheetData[] }) {
+  const { t } = useLang()
   const [active, setActive] = useState(0)
 
   if (sheets.length === 0) {
-    return <p className="text-sm text-muted-foreground">空白表格</p>
+    return <p className="text-sm text-muted-foreground">{t.sheet.empty}</p>
   }
 
   const sheet = sheets[active]

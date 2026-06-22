@@ -1,5 +1,7 @@
 "use client"
 
+import { useLang } from "@/lib/i18n"
+
 export function ImageViewer({ url, alt }: { url: string; alt: string }) {
   return (
     <div className="flex items-center justify-center rounded-lg border border-border bg-card p-4">
@@ -15,22 +17,24 @@ export function ImageViewer({ url, alt }: { url: string; alt: string }) {
 }
 
 export function AudioViewer({ url, mime }: { url: string; mime: string }) {
+  const { t } = useLang()
   return (
     <div className="rounded-lg border border-border bg-card p-6">
       <audio controls className="w-full">
         <source src={url} type={mime} />
-        您的浏览器不支持音频播放。
+        {t.media.noAudio}
       </audio>
     </div>
   )
 }
 
 export function VideoViewer({ url, mime }: { url: string; mime: string }) {
+  const { t } = useLang()
   return (
     <div className="flex justify-center rounded-lg border border-border bg-card p-4">
       <video controls className="max-h-[70vh] w-full rounded-md">
         <source src={url} type={mime} />
-        您的浏览器不支持视频播放。
+        {t.media.noVideo}
       </video>
     </div>
   )

@@ -19,7 +19,7 @@ import {
   X,
 } from "lucide-react"
 import { parseFile } from "@/lib/parse-file"
-import { EXAMPLES, type Example } from "@/lib/example-files"
+import { getExamples, type Example } from "@/lib/example-files"
 import {
   getCategory,
   SUPPORTED_EXTENSIONS,
@@ -27,8 +27,10 @@ import {
   type ParseResult,
 } from "@/lib/preview-types"
 import { cn } from "@/lib/utils"
+import { useLang, type Lang } from "@/lib/i18n"
 import { FilePreview } from "@/components/file-preview"
 import { InstallPrompt } from "@/components/install-prompt"
+import { LanguageSwitcher } from "@/components/language-switcher"
 
 type Item = {
   id: string
@@ -42,20 +44,20 @@ type Item = {
 
 const CATEGORY_META: Record<
   FileCategory,
-  { icon: typeof FileText; label: string; color: string }
+  { icon: typeof FileText; color: string }
 > = {
-  text: { icon: FileText, label: "文本", color: "text-muted-foreground" },
-  code: { icon: FileCode, label: "代码", color: "text-sky-600" },
-  markdown: { icon: FileType2, label: "Markdown", color: "text-primary" },
-  pdf: { icon: FileText, label: "PDF", color: "text-destructive" },
-  word: { icon: FileText, label: "Word", color: "text-primary" },
-  excel: { icon: FileSpreadsheet, label: "表格", color: "text-emerald-600" },
-  ppt: { icon: Presentation, label: "幻灯片", color: "text-orange-600" },
-  mindmap: { icon: Network, label: "思维导图", color: "text-primary" },
-  image: { icon: FileImage, label: "图片", color: "text-pink-600" },
-  audio: { icon: Music, label: "音频", color: "text-amber-600" },
-  video: { icon: FileVideo, label: "视频", color: "text-indigo-600" },
-  unknown: { icon: FileText, label: "未知", color: "text-muted-foreground" },
+  text: { icon: FileText, color: "text-muted-foreground" },
+  code: { icon: FileCode, color: "text-sky-600" },
+  markdown: { icon: FileType2, color: "text-primary" },
+  pdf: { icon: FileText, color: "text-destructive" },
+  word: { icon: FileText, color: "text-primary" },
+  excel: { icon: FileSpreadsheet, color: "text-emerald-600" },
+  ppt: { icon: Presentation, color: "text-orange-600" },
+  mindmap: { icon: Network, color: "text-primary" },
+  image: { icon: FileImage, color: "text-pink-600" },
+  audio: { icon: Music, color: "text-amber-600" },
+  video: { icon: FileVideo, color: "text-indigo-600" },
+  unknown: { icon: FileText, color: "text-muted-foreground" },
 }
 
 function formatSize(bytes: number) {
@@ -65,6 +67,7 @@ function formatSize(bytes: number) {
 }
 
 export function FilePreviewerApp() {
+  const { t, lang } = useLang()
   const [items, setItems] = useState<Item[]>([])
   const [activeId, setActiveId] = useState<string | null>(null)
   const [dragging, setDragging] = useState(false)
@@ -102,7 +105,7 @@ export function FilePreviewerApp() {
                 ? {
                     ...it,
                     status: "error",
-                    error: e instanceof Error ? e.message : "解析失败",
+                    error: e instanceof Error ? e.message : t.preview.parseFailed,
                   }
                 : it,
             ),
@@ -110,7 +113,7 @@ export function FilePreviewerApp() {
         }
       }),
     )
-  }, [])
+  }, [t])
 
   const onDrop = useCallback(
     (e: React.DragEvent) => {
@@ -162,27 +165,28 @@ export function FilePreviewerApp() {
           </div>
           <div>
             <h1 className="text-sm font-semibold leading-none text-foreground">
-              文件预览器
+              {t.app.title}
             </h1>
             <p className="mt-1 text-xs text-muted-foreground">
-              本地解析，文件不会上传
+              {t.app.subtitle}
             </p>
           </div>
         </div>
         <div className="flex items-center gap-1.5">
+          <LanguageSwitcher />
           <Link
             href="/about"
             className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           >
             <Info className="size-4" />
-            <span className="hidden sm:inline">关于</span>
+            <span className="hidden sm:inline">{t.nav.about}</span>
           </Link>
           <button
             onClick={() => inputRef.current?.click()}
             className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
             <Upload className="size-4" />
-            选择文件
+            <span className="hidden sm:inline">{t.nav.choose}</span>
           </button>
         </div>
         <input
@@ -224,10 +228,10 @@ export function FilePreviewerApp() {
                       </span>
                       <span className="block text-xs text-muted-foreground">
                         {it.status === "parsing"
-                          ? "解析中..."
+                          ? t.status.parsing
                           : it.status === "error"
-                            ? "解析失败"
-                            : `${Meta.label} · ${formatSize(it.size)}`}
+                            ? t.status.failed
+                            : `${t.categories[it.category]} · ${formatSize(it.size)}`}
                       </span>
                     </span>
                     {it.status === "parsing" && (
@@ -256,6 +260,8 @@ export function FilePreviewerApp() {
           {!active && (
             <div className="flex flex-1 items-center justify-center p-6">
               <Dropzone
+                t={t}
+                lang={lang}
                 onPick={() => inputRef.current?.click()}
                 onExample={(ex) => handleFiles([ex.build()])}
               />
@@ -274,7 +280,7 @@ export function FilePreviewerApp() {
                 {active.status === "parsing" && (
                   <div className="flex items-center justify-center gap-2 py-16 text-sm text-muted-foreground">
                     <Loader2 className="size-4 animate-spin" />
-                    正在解析文件...
+                    {t.preview.parsing}
                   </div>
                 )}
                 {active.status === "error" && (
@@ -297,7 +303,7 @@ export function FilePreviewerApp() {
           <div className="rounded-xl border-2 border-dashed border-primary bg-card px-10 py-8 text-center shadow-lg">
             <Upload className="mx-auto size-8 text-primary" />
             <p className="mt-3 text-base font-medium text-foreground">
-              松开鼠标即可解析文件
+              {t.drop.overlay}
             </p>
           </div>
         </div>
@@ -309,12 +315,17 @@ export function FilePreviewerApp() {
 }
 
 function Dropzone({
+  t,
+  lang,
   onPick,
   onExample,
 }: {
+  t: ReturnType<typeof useLang>["t"]
+  lang: Lang
   onPick: () => void
   onExample: (ex: Example) => void
 }) {
+  const examples = getExamples(lang)
   return (
     <div className="w-full max-w-lg text-center">
       <button
@@ -326,10 +337,10 @@ function Dropzone({
         </div>
         <div>
           <p className="text-base font-medium text-foreground">
-            拖入文件到此处，或点击选择
+            {t.dropzone.title}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">
-            支持思维导图、文档、表格、代码、图片、音视频等多种格式
+            {t.dropzone.subtitle}
           </p>
         </div>
       </button>
@@ -364,10 +375,10 @@ function Dropzone({
 
       <div className="mt-8">
         <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-          没有文件？试试这些示例
+          {t.examples.heading}
         </p>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-          {EXAMPLES.map((ex) => {
+          {examples.map((ex) => {
             const Meta = CATEGORY_META[ex.category]
             const Icon = Meta.icon
             return (
@@ -391,7 +402,7 @@ function Dropzone({
 
       <p className="mt-6 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
         <ShieldCheck className="size-3.5 text-primary" />
-        所有文件均在本地浏览器解析，绝不上传到服务器
+        {t.privacyFooter}
       </p>
     </div>
   )

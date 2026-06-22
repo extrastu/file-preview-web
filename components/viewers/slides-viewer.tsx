@@ -1,10 +1,12 @@
 "use client"
 
 import type { SlideData } from "@/lib/preview-types"
+import { useLang } from "@/lib/i18n"
 
 export function SlidesViewer({ slides }: { slides: SlideData[] }) {
+  const { t } = useLang()
   if (slides.length === 0) {
-    return <p className="text-sm text-muted-foreground">未找到幻灯片内容</p>
+    return <p className="text-sm text-muted-foreground">{t.slides.empty}</p>
   }
 
   return (
@@ -16,7 +18,7 @@ export function SlidesViewer({ slides }: { slides: SlideData[] }) {
         >
           <div className="flex items-center justify-between border-b border-border bg-muted px-4 py-2">
             <span className="text-xs font-medium text-muted-foreground">
-              幻灯片 {slide.index}
+              {t.slides.slide(slide.index)}
             </span>
           </div>
           <div className="aspect-video p-6">
@@ -37,7 +39,7 @@ export function SlidesViewer({ slides }: { slides: SlideData[] }) {
               ))}
             </ul>
             {!slide.title && slide.texts.length === 0 && (
-              <p className="text-sm text-muted-foreground">（此页无文本内容）</p>
+              <p className="text-sm text-muted-foreground">{t.slides.noText}</p>
             )}
           </div>
         </div>

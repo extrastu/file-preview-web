@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react"
 import { Download, Share, SquarePlus, X } from "lucide-react"
+import { useLang } from "@/lib/i18n"
 
 type BeforeInstallPromptEvent = Event & {
   prompt: () => Promise<void>
@@ -30,6 +31,7 @@ function isIos() {
 }
 
 export function InstallPrompt() {
+  const { t } = useLang()
   const [deferred, setDeferred] = useState<BeforeInstallPromptEvent | null>(null)
   const [visible, setVisible] = useState(false)
   const [iosHelp, setIosHelp] = useState(false)
@@ -100,18 +102,18 @@ export function InstallPrompt() {
           <Download className="size-5 text-primary" />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-medium text-foreground">添加到桌面使用</p>
+          <p className="text-sm font-medium text-foreground">{t.install.title}</p>
           {iosHelp ? (
             <p className="mt-1 flex flex-wrap items-center gap-1 text-xs leading-relaxed text-muted-foreground">
-              点击浏览器的
+              {t.install.iosA}
               <Share className="inline size-3.5 text-primary" />
-              分享按钮，选择
+              {t.install.iosB}
               <SquarePlus className="inline size-3.5 text-primary" />
-              {'"添加到主屏幕"'}
+              {t.install.iosC}
             </p>
           ) : (
             <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-              安装后可像原生应用一样离线使用，启动更快、全屏无干扰。
+              {t.install.desc}
             </p>
           )}
           {!iosHelp && (
@@ -120,13 +122,13 @@ export function InstallPrompt() {
               className="mt-3 inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
             >
               <Download className="size-3.5" />
-              立即安装
+              {t.install.now}
             </button>
           )}
         </div>
         <button
           onClick={dismiss}
-          aria-label="关闭安装提示"
+          aria-label={t.install.close}
           className="shrink-0 rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
         >
           <X className="size-4" />

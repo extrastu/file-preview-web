@@ -2,10 +2,10 @@ import type { MetadataRoute } from "next"
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "在线文件预览器",
-    short_name: "文件预览器",
+    name: "Online File Previewer",
+    short_name: "File Previewer",
     description:
-      "在浏览器本地解析并预览 xmind、md、pdf、word、ppt、excel、代码、图片、音视频等多种格式，文件不会上传到服务器。",
+      "Parse and preview xmind, md, pdf, word, ppt, excel, code, images, audio and video locally in your browser. Files are never uploaded to a server.",
     id: "/",
     start_url: "/?source=pwa",
     scope: "/",
@@ -14,7 +14,7 @@ export default function manifest(): MetadataRoute.Manifest {
     orientation: "any",
     background_color: "#fcfcfd",
     theme_color: "#4f46e5",
-    lang: "zh-CN",
+    lang: "en",
     dir: "ltr",
     categories: ["productivity", "utilities"],
     prefer_related_applications: false,
@@ -46,9 +46,9 @@ export default function manifest(): MetadataRoute.Manifest {
     ],
     shortcuts: [
       {
-        name: "打开文件",
-        short_name: "打开文件",
-        description: "选择本地文件进行预览",
+        name: "Open file",
+        short_name: "Open file",
+        description: "Choose a local file to preview",
         url: "/?action=open",
         icons: [{ src: "/icon-192.png", sizes: "192x192", type: "image/png" }],
       },

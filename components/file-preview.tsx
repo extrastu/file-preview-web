@@ -1,6 +1,7 @@
 "use client"
 
 import type { ParseResult } from "@/lib/preview-types"
+import { useLang } from "@/lib/i18n"
 import { MindmapViewer } from "./viewers/mindmap-viewer"
 import { PdfViewer } from "./viewers/pdf-viewer"
 import { SheetViewer } from "./viewers/sheet-viewer"
@@ -18,6 +19,7 @@ import {
 } from "./viewers/doc-viewer"
 
 export function FilePreview({ result }: { result: ParseResult }) {
+  const { t } = useLang()
   switch (result.kind) {
     case "text":
       return <TextViewer content={result.content} />
@@ -44,7 +46,7 @@ export function FilePreview({ result }: { result: ParseResult }) {
     case "unsupported":
       return (
         <p className="py-8 text-center text-sm text-muted-foreground">
-          暂不支持预览 .{result.ext} 格式的文件
+          {t.preview.unsupported(result.ext)}
         </p>
       )
   }

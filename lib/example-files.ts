@@ -1,6 +1,8 @@
 // In-code sample documents. Each builder returns a real File object so it
 // flows through the exact same parsing pipeline as user-provided files.
 
+import type { Lang } from "@/lib/i18n"
+
 export type Example = {
   id: string
   label: string
@@ -13,7 +15,77 @@ function textFile(name: string, content: string, type: string): File {
   return new File([content], name, { type })
 }
 
-const MARKDOWN_SAMPLE = `# 在线文件预览器
+// ---------- English samples ----------
+
+const MARKDOWN_EN = `# Online File Previewer
+
+A **100% local** multi-format file preview tool. Files are never uploaded to a server.
+
+## Highlights
+
+- Supports 60+ file formats
+- Drag and drop to preview, no upload
+- Installable as a PWA for offline use
+
+## Supported formats
+
+| Category | Formats |
+| --- | --- |
+| Documents | pdf, docx, txt, rtf |
+| Spreadsheets | xlsx, xls, csv |
+| Mind maps | xmind, mm, opml |
+| Code | ts, js, py, json |
+
+> Tip: all parsing happens in your browser — safe and private.
+
+\`\`\`ts
+function preview(file: File) {
+  return parseFile(file)
+}
+\`\`\`
+`
+
+const CSV_EN = `Month,Revenue,Orders,Avg Order Value
+Jan,128000,320,400
+Feb,96500,241,400
+Mar,154200,385,401
+Apr,142800,357,400
+May,178900,447,400
+Jun,203400,508,401
+`
+
+const OPML_EN = `<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head><title>Project Plan</title></head>
+  <body>
+    <outline text="Product Launch Plan">
+      <outline text="Requirements">
+        <outline text="User research"/>
+        <outline text="Competitor analysis"/>
+        <outline text="Requirement review"/>
+      </outline>
+      <outline text="Design">
+        <outline text="Interaction design"/>
+        <outline text="Visual design"/>
+      </outline>
+      <outline text="Development">
+        <outline text="Frontend"/>
+        <outline text="Backend"/>
+        <outline text="Integration testing"/>
+      </outline>
+      <outline text="Release">
+        <outline text="Canary release"/>
+        <outline text="General availability"/>
+        <outline text="Retrospective"/>
+      </outline>
+    </outline>
+  </body>
+</opml>
+`
+
+// ---------- Chinese samples ----------
+
+const MARKDOWN_ZH = `# 在线文件预览器
 
 一个 **100% 本地解析** 的多格式文件预览工具，文件不会上传到服务器。
 
@@ -41,7 +113,7 @@ function preview(file: File) {
 \`\`\`
 `
 
-const CSV_SAMPLE = `月份,销售额,订单数,客单价
+const CSV_ZH = `月份,销售额,订单数,客单价
 1月,128000,320,400
 2月,96500,241,400
 3月,154200,385,401
@@ -50,7 +122,7 @@ const CSV_SAMPLE = `月份,销售额,订单数,客单价
 6月,203400,508,401
 `
 
-const OPML_SAMPLE = `<?xml version="1.0" encoding="UTF-8"?>
+const OPML_ZH = `<?xml version="1.0" encoding="UTF-8"?>
 <opml version="2.0">
   <head><title>项目规划</title></head>
   <body>
@@ -79,6 +151,7 @@ const OPML_SAMPLE = `<?xml version="1.0" encoding="UTF-8"?>
 </opml>
 `
 
+// JSON sample is language-neutral (shared).
 const JSON_SAMPLE = `{
   "name": "file-previewer",
   "version": "1.0.0",
@@ -101,33 +174,69 @@ const JSON_SAMPLE = `{
 }
 `
 
-export const EXAMPLES: Example[] = [
-  {
-    id: "markdown",
-    label: "产品介绍",
-    fileName: "产品介绍.md",
-    category: "markdown",
-    build: () => textFile("产品介绍.md", MARKDOWN_SAMPLE, "text/markdown"),
+type ExampleConfig = {
+  markdown: string
+  csv: string
+  opml: string
+}
+
+const CONFIG: Record<Lang, ExampleConfig> = {
+  en: { markdown: MARKDOWN_EN, csv: CSV_EN, opml: OPML_EN },
+  zh: { markdown: MARKDOWN_ZH, csv: CSV_ZH, opml: OPML_ZH },
+}
+
+const LABELS: Record<Lang, { markdown: string; excel: string; mindmap: string; code: string }> = {
+  en: {
+    markdown: "Product Intro",
+    excel: "Sales Data",
+    mindmap: "Project Plan",
+    code: "Config File",
   },
-  {
-    id: "excel",
-    label: "销售数据",
-    fileName: "销售数据.csv",
-    category: "excel",
-    build: () => textFile("销售数据.csv", CSV_SAMPLE, "text/csv"),
+  zh: {
+    markdown: "产品介绍",
+    excel: "销售数据",
+    mindmap: "项目规划",
+    code: "配置文件",
   },
-  {
-    id: "mindmap",
-    label: "项目规划",
-    fileName: "项目规划.opml",
-    category: "mindmap",
-    build: () => textFile("项目规划.opml", OPML_SAMPLE, "text/x-opml"),
-  },
-  {
-    id: "code",
-    label: "配置文件",
-    fileName: "package.json",
-    category: "code",
-    build: () => textFile("package.json", JSON_SAMPLE, "application/json"),
-  },
-]
+}
+
+const FILE_NAMES: Record<Lang, { markdown: string; excel: string; mindmap: string }> = {
+  en: { markdown: "product-intro.md", excel: "sales-data.csv", mindmap: "project-plan.opml" },
+  zh: { markdown: "产品介绍.md", excel: "销售数据.csv", mindmap: "项目规划.opml" },
+}
+
+export function getExamples(lang: Lang): Example[] {
+  const cfg = CONFIG[lang]
+  const labels = LABELS[lang]
+  const names = FILE_NAMES[lang]
+  return [
+    {
+      id: "markdown",
+      label: labels.markdown,
+      fileName: names.markdown,
+      category: "markdown",
+      build: () => textFile(names.markdown, cfg.markdown, "text/markdown"),
+    },
+    {
+      id: "excel",
+      label: labels.excel,
+      fileName: names.excel,
+      category: "excel",
+      build: () => textFile(names.excel, cfg.csv, "text/csv"),
+    },
+    {
+      id: "mindmap",
+      label: labels.mindmap,
+      fileName: names.mindmap,
+      category: "mindmap",
+      build: () => textFile(names.mindmap, cfg.opml, "text/x-opml"),
+    },
+    {
+      id: "code",
+      label: labels.code,
+      fileName: "package.json",
+      category: "code",
+      build: () => textFile("package.json", JSON_SAMPLE, "application/json"),
+    },
+  ]
+}

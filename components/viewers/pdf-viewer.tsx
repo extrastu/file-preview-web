@@ -2,8 +2,10 @@
 
 import { useEffect, useRef, useState } from "react"
 import { Loader2 } from "lucide-react"
+import { useLang } from "@/lib/i18n"
 
 export function PdfViewer({ data }: { data: ArrayBuffer }) {
+  const { t } = useLang()
   const containerRef = useRef<HTMLDivElement>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -52,7 +54,7 @@ export function PdfViewer({ data }: { data: ArrayBuffer }) {
         if (!cancelled) setLoading(false)
       } catch (e) {
         if (!cancelled) {
-          setError(e instanceof Error ? e.message : "PDF 解析失败")
+          setError(e instanceof Error ? e.message : t.pdf.failed)
           setLoading(false)
         }
       }
@@ -62,14 +64,14 @@ export function PdfViewer({ data }: { data: ArrayBuffer }) {
     return () => {
       cancelled = true
     }
-  }, [data])
+  }, [data, t])
 
   return (
     <div>
       {loading && (
         <div className="flex items-center justify-center gap-2 py-12 text-sm text-muted-foreground">
           <Loader2 className="size-4 animate-spin" />
-          正在渲染 PDF...
+          {t.pdf.rendering}
         </div>
       )}
       {error && (
@@ -77,7 +79,7 @@ export function PdfViewer({ data }: { data: ArrayBuffer }) {
       )}
       {!loading && !error && numPages > 0 && (
         <p className="mb-3 text-center text-xs text-muted-foreground">
-          共 {numPages} 页
+          {t.pdf.pages(numPages)}
         </p>
       )}
       <div ref={containerRef} />

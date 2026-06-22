@@ -1,5 +1,7 @@
 "use client"
 
+import { useLang } from "@/lib/i18n"
+
 export function CodeViewer({
   content,
   language,
@@ -7,6 +9,7 @@ export function CodeViewer({
   content: string
   language: string
 }) {
+  const { t } = useLang()
   const lines = content.replace(/\n$/, "").split("\n")
 
   return (
@@ -16,7 +19,7 @@ export function CodeViewer({
           {language}
         </span>
         <span className="text-xs text-muted-foreground">
-          {lines.length} 行
+          {t.code.lines(lines.length)}
         </span>
       </div>
       <div className="overflow-auto">

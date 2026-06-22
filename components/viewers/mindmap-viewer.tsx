@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { ChevronRight, FileText } from "lucide-react"
 import type { MindMap, MindNode } from "@/lib/preview-types"
+import { useLang } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
 function Node({ node, depth }: { node: MindNode; depth: number }) {
@@ -63,10 +64,11 @@ function Node({ node, depth }: { node: MindNode; depth: number }) {
 }
 
 export function MindmapViewer({ maps }: { maps: MindMap[] }) {
+  const { t } = useLang()
   const [active, setActive] = useState(0)
 
   if (maps.length === 0) {
-    return <p className="text-sm text-muted-foreground">空白思维导图</p>
+    return <p className="text-sm text-muted-foreground">{t.mindmap.empty}</p>
   }
 
   return (

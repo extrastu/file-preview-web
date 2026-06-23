@@ -23,6 +23,12 @@ type Dict = {
   drop: { overlay: string }
   dropzone: { title: string; subtitle: string }
   examples: { heading: string }
+  urlInput: {
+    label: string
+    placeholder: string
+    button: string
+    loading: string
+  }
   privacyFooter: string
   mindmap: { empty: string }
   pdf: { failed: string; rendering: string; pages: (n: number) => string }
@@ -92,6 +98,9 @@ const en: Dict = {
     ERR_PPTX: "No slide content found (.pptx only)",
     ERR_DOC: "Legacy .doc is not supported; please convert to .docx and try again.",
     ERR_PPT: "Legacy .ppt is not supported; please convert to .pptx and try again.",
+    ERR_URL_EMPTY: "Please enter a URL",
+    ERR_URL_INVALID: "Invalid URL",
+    ERR_URL_FETCH: "Failed to fetch the file from this URL",
   },
   drop: { overlay: "Drop to preview" },
   dropzone: {
@@ -100,8 +109,14 @@ const en: Dict = {
       "Supports mind maps, documents, spreadsheets, code, images, audio/video and more",
   },
   examples: { heading: "No file? Try these examples" },
+  urlInput: {
+    label: "Or preview from a URL",
+    placeholder: "https://example.com/file.pdf",
+    button: "Load",
+    loading: "Loading...",
+  },
   privacyFooter:
-    "All files are parsed locally in your browser and never uploaded to any server",
+    "Local files are parsed in your browser and never uploaded; remote URLs are fetched through a proxy",
   mindmap: { empty: "Empty mind map" },
   pdf: {
     failed: "Failed to parse PDF",
@@ -208,6 +223,9 @@ const zh: Dict = {
     ERR_PPTX: "未找到幻灯片内容（仅支持 .pptx 格式）",
     ERR_DOC: "暂不支持旧版 .doc 格式，请转换为 .docx 后重试。",
     ERR_PPT: "暂不支持旧版 .ppt 格式，请转换为 .pptx 后重试。",
+    ERR_URL_EMPTY: "请输入链接地址",
+    ERR_URL_INVALID: "链接地址无效",
+    ERR_URL_FETCH: "无法从该链接获取文件",
   },
   drop: { overlay: "松开鼠标即可解析文件" },
   dropzone: {
@@ -215,7 +233,13 @@ const zh: Dict = {
     subtitle: "支持思维导图、文档、表格、代码、图片、音视频等多种格式",
   },
   examples: { heading: "没有文件？试试这些示例" },
-  privacyFooter: "所有文件均在本地浏览器解析，绝不上传到服务器",
+  urlInput: {
+    label: "或通过链接在线预览",
+    placeholder: "https://example.com/file.pdf",
+    button: "加载",
+    loading: "加载中...",
+  },
+  privacyFooter: "本地文件在浏览器中解析，绝不上传；远程链接通过代理获取",
   mindmap: { empty: "空白思维导图" },
   pdf: {
     failed: "PDF 解析失败",

@@ -10,6 +10,7 @@ import {
   FileType2,
   FileVideo,
   Info,
+  Link2,
   Loader2,
   Music,
   Network,
@@ -19,6 +20,7 @@ import {
   X,
 } from "lucide-react"
 import { parseFile } from "@/lib/parse-file"
+import { fetchUrlAsFile } from "@/lib/fetch-url"
 import { getExamples, type Example } from "@/lib/example-files"
 import {
   getCategory,
@@ -110,6 +112,15 @@ export function FilePreviewerApp() {
       }),
     )
   }, [t])
+
+  const handleUrl = useCallback(
+    async (url: string) => {
+      // Throws an Error with a stable i18n error code; the caller maps it.
+      const file = await fetchUrlAsFile(url)
+      await handleFiles([file])
+    },
+    [handleFiles],
+  )
 
   const onDrop = useCallback(
     (e: React.DragEvent) => {
@@ -253,6 +264,7 @@ export function FilePreviewerApp() {
                 lang={lang}
                 onPick={() => inputRef.current?.click()}
                 onExample={(ex) => handleFiles([ex.build()])}
+                onUrl={handleUrl}
               />
             </div>
           )}
@@ -308,13 +320,35 @@ function Dropzone({
   lang,
   onPick,
   onExample,
+  onUrl,
 }: {
   t: ReturnType<typeof useLang>["t"]
   lang: Lang
   onPick: () => void
   onExample: (ex: Example) => void
+  onUrl: (url: string) => Promise<void>
 }) {
   const examples = getExamples(lang)
+  const [url, setUrl] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [urlError, setUrlError] = useState<string | null>(null)
+
+  const submitUrl = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (loading) return
+    setUrlError(null)
+    setLoading(true)
+    try {
+      await onUrl(url)
+      setUrl("")
+    } catch (err) {
+      const code = err instanceof Error ? err.message : ""
+      setUrlError(t.errors[code] ?? t.preview.parseFailed)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="w-full max-w-lg text-center">
       <button
@@ -333,6 +367,36 @@ function Dropzone({
           </p>
         </div>
       </button>
+
+      <form onSubmit={submitUrl} className="mt-4">
+        <label className="mb-1.5 block text-left text-xs font-medium text-muted-foreground">
+          {t.urlInput.label}
+        </label>
+        <div className="flex gap-2">
+          <div className="relative flex-1">
+            <Link2 className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <input
+              type="text"
+              inputMode="url"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder={t.urlInput.placeholder}
+              className="w-full rounded-lg border border-border bg-card py-2.5 pl-9 pr-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-60"
+          >
+            {loading && <Loader2 className="size-4 animate-spin" />}
+            {loading ? t.urlInput.loading : t.urlInput.button}
+          </button>
+        </div>
+        {urlError && (
+          <p className="mt-2 text-left text-xs text-destructive">{urlError}</p>
+        )}
+      </form>
 
       <div className="mt-6 flex flex-wrap justify-center gap-1.5">
         {[

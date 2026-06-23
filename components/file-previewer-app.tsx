@@ -9,6 +9,7 @@ import {
   FileText,
   FileType2,
   FileVideo,
+  History,
   Info,
   Link2,
   Loader2,
@@ -181,6 +182,13 @@ export function FilePreviewerApp() {
         </div>
         <div className="flex items-center gap-1.5">
           <LanguageSwitcher />
+          <Link
+            href="/changelog"
+            className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          >
+            <History className="size-4" />
+            <span className="hidden sm:inline">{t.nav.changelog}</span>
+          </Link>
           <Link
             href="/about"
             className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"

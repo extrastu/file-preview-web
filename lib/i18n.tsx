@@ -16,7 +16,7 @@ const STORAGE_KEY = "app-lang"
 type Dict = {
   categories: Record<string, string>
   app: { title: string; subtitle: string }
-  nav: { about: string; choose: string; github: string }
+  nav: { about: string; choose: string; github: string; changelog: string }
   status: { parsing: string; failed: string }
   preview: { parsing: string; parseFailed: string; unsupported: (ext: string) => string }
   errors: Record<string, string>
@@ -63,6 +63,11 @@ type Dict = {
     openSourceDesc: string
     openSourceCta: string
   }
+  changelog: {
+    back: string
+    title: string
+    intro: string
+  }
 }
 
 const en: Dict = {
@@ -84,7 +89,12 @@ const en: Dict = {
     title: "File Previewer",
     subtitle: "Parsed locally, never uploaded",
   },
-  nav: { about: "About", choose: "Choose File", github: "GitHub" },
+  nav: {
+    about: "About",
+    choose: "Choose File",
+    github: "GitHub",
+    changelog: "Changelog",
+  },
   status: { parsing: "Parsing...", failed: "Failed" },
   preview: {
     parsing: "Parsing file...",
@@ -188,6 +198,12 @@ const en: Dict = {
       "This project is fully open source. Browse the code, file issues, or contribute on GitHub.",
     openSourceCta: "View on GitHub",
   },
+  changelog: {
+    back: "Back to previewer",
+    title: "Changelog",
+    intro:
+      "A record of new features, improvements and fixes in the Online File Previewer.",
+  },
 }
 
 const zh: Dict = {
@@ -209,7 +225,12 @@ const zh: Dict = {
     title: "文件预览器",
     subtitle: "本地解析，文件不会上传",
   },
-  nav: { about: "关于", choose: "选择文件", github: "开源" },
+  nav: {
+    about: "关于",
+    choose: "选择文件",
+    github: "开源",
+    changelog: "更新日志",
+  },
   status: { parsing: "解析中...", failed: "解析失败" },
   preview: {
     parsing: "正在解析文件...",
@@ -310,6 +331,11 @@ const zh: Dict = {
     openSourceDesc:
       "本项目完全开源，欢迎在 GitHub 上浏览代码、提交问题或参与贡献。",
     openSourceCta: "在 GitHub 查看",
+  },
+  changelog: {
+    back: "返回预览器",
+    title: "更新日志",
+    intro: "记录在线文件预览器的新功能、改进与修复。",
   },
 }
 
